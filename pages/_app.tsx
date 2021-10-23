@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { AppProvider } from '../components/AppContext';
 
 import 'tailwindcss/tailwind.css';
+import 'antd/dist/antd.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 import '../styles/globals.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {

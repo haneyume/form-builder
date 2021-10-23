@@ -2,6 +2,8 @@ import React from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 
 import { AppContext } from '../components/AppContext';
 import { Form } from '../components/Form';
@@ -23,7 +25,15 @@ const Home: NextPage = () => {
         </div>
 
         <div>
-          <Form onSubmit={(data) => alert(JSON.stringify(data))} />
+          <div className="text-lg mb-1">Form</div>
+          <div className="border border-gray-200">
+            <Form
+              key={JSON.stringify(appCtx.fields)}
+              fields={appCtx.fields}
+              styles={appCtx.formStyles}
+              onSubmit={(data) => alert(JSON.stringify(data))}
+            />
+          </div>
         </div>
 
         <div>
@@ -51,6 +61,18 @@ const FormStyles = () => {
         onChange={(evt) => {
           appCtx.setFormStyles((prevState) => {
             prevState.formClassName = evt.target.value;
+            return { ...prevState };
+          });
+        }}
+      />
+
+      <label>fieldClassName</label>
+      <input
+        className={className}
+        value={appCtx.formStyles.fieldClassName}
+        onChange={(evt) => {
+          appCtx.setFormStyles((prevState) => {
+            prevState.fieldClassName = evt.target.value;
             return { ...prevState };
           });
         }}
@@ -87,6 +109,18 @@ const FormStyles = () => {
         onChange={(evt) => {
           appCtx.setFormStyles((prevState) => {
             prevState.errorMessageClassName = evt.target.value;
+            return { ...prevState };
+          });
+        }}
+      />
+
+      <label>submitButtonClassName</label>
+      <input
+        className={className}
+        value={appCtx.formStyles.submitButtonClassName}
+        onChange={(evt) => {
+          appCtx.setFormStyles((prevState) => {
+            prevState.submitButtonClassName = evt.target.value;
             return { ...prevState };
           });
         }}
@@ -152,6 +186,20 @@ const FormFields = () => {
     </div>
   );
 };
+
+// const SortableItem = SortableElement(({ value }: any) => {
+//   return <li>{value}</li>;
+// });
+
+// const SortableList = SortableContainer(({ items }: any) => {
+//   return (
+//     <ul>
+//       {items.map((value, index) => (
+//         <SortableItem key={`item-${value}`} index={index} value={value} />
+//       ))}
+//     </ul>
+//   );
+// });
 
 const FormFieldProprties = () => {
   const appCtx = React.useContext(AppContext);
@@ -221,6 +269,14 @@ const FormFieldProprties = () => {
           'radio',
           'date',
           'time',
+          'file',
+          'tel',
+          'url',
+          'search',
+          'range',
+          'color',
+          'select',
+          'textarea',
         ].map((item) => (
           <option value={item}>{item}</option>
         ))}
