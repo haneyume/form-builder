@@ -148,7 +148,8 @@ const FormFields = () => {
                 placeholder: 'Please input test',
                 type: 'text',
                 required: false,
-                requiredErrorMessage: 'required',
+                requiredErrorMessage: 'This field is required',
+                disabled: false,
               },
             ];
           });
@@ -282,11 +283,10 @@ const FormFieldProprties = () => {
         ))}
       </select>
 
-      <label>required</label>
       <div className="flex items-center mb-5 space-x-2">
         <input
           id="required"
-          // className={className}
+          className=""
           checked={field.required}
           type="checkbox"
           onChange={(evt) => {
@@ -311,6 +311,35 @@ const FormFieldProprties = () => {
           });
         }}
       />
+
+      <label>disabled</label>
+      <input
+        className={className}
+        value={field.requiredErrorMessage}
+        onChange={(evt) => {
+          appCtx.setFields((prevState) => {
+            prevState[appCtx.selectedIndex].requiredErrorMessage =
+              evt.target.value;
+            return [...prevState];
+          });
+        }}
+      />
+
+      <div className="flex items-center mb-5 space-x-2">
+        <input
+          id="disabled"
+          className=""
+          checked={field.disabled}
+          type="checkbox"
+          onChange={(evt) => {
+            appCtx.setFields((prevState) => {
+              prevState[appCtx.selectedIndex].disabled = evt.target.checked;
+              return [...prevState];
+            });
+          }}
+        />
+        <label htmlFor="disabled">disabled</label>
+      </div>
     </div>
   );
 };

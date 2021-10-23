@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm, UseFormRegister } from 'react-hook-form';
+import clsx from 'clsx';
 
 import { FormFieldProps, FormStyleProps } from './Type';
 
@@ -25,7 +26,17 @@ export const Form = ({
   return (
     <form className={styles.formClassName} onSubmit={handleSubmit(onSubmit)}>
       {fields.map((item, index) => {
-        if (item.type === 'select') {
+        if (item.type === 'checkbox') {
+          return (
+            <CheckboxField
+              key={index}
+              field={item}
+              styles={styles}
+              register={register}
+              errors={errors}
+            />
+          );
+        } else if (item.type === 'select') {
           return (
             <SelectField
               key={index}
@@ -63,6 +74,44 @@ export const Form = ({
   );
 };
 
+const CheckboxField = ({
+  field,
+  styles,
+  register,
+  errors,
+}: {
+  field: FormFieldProps;
+  styles: FormStyleProps;
+  register: UseFormRegister<any>;
+  errors: any;
+}) => {
+  return (
+    <div className={styles.fieldClassName}>
+      <div className="flex items-center space-x-2">
+        <input
+          id={`form_${field.name}`}
+          className={clsx(
+            styles.inputClassName,
+            field.disabled && 'opacity-40',
+          )}
+          placeholder={field.placeholder}
+          disabled={field.disabled}
+          type={field.type}
+          {...register(field.name, { required: field.required })}
+        />
+        <label className={styles.labelClassName} htmlFor={`form_${field.name}`}>
+          {field.label}
+        </label>
+      </div>
+      {errors[field.name] && errors[field.name].type === 'required' && (
+        <span className={styles.errorMessageClassName}>
+          {field.requiredErrorMessage}
+        </span>
+      )}
+    </div>
+  );
+};
+
 const InputField = ({
   field,
   styles,
@@ -80,8 +129,9 @@ const InputField = ({
         {field.label}
       </label>
       <input
-        className={styles.inputClassName}
+        className={clsx(styles.inputClassName, field.disabled && 'opacity-40')}
         placeholder={field.placeholder}
+        disabled={field.disabled}
         type={field.type}
         {...register(field.name, { required: field.required })}
       />
@@ -111,8 +161,9 @@ const SelectField = ({
         {field.label}
       </label>
       <select
-        className={styles.inputClassName}
+        className={clsx(styles.inputClassName, field.disabled && 'opacity-40')}
         placeholder={field.placeholder}
+        disabled={field.disabled}
         {...register(field.name, { required: field.required })}
       >
         <option></option>
@@ -145,8 +196,9 @@ const TextAreaField = ({
         {field.label}
       </label>
       <textarea
-        className={styles.inputClassName}
+        className={clsx(styles.inputClassName, field.disabled && 'opacity-40')}
         placeholder={field.placeholder}
+        disabled={field.disabled}
         rows={5}
         {...register(field.name, { required: field.required })}
       />

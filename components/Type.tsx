@@ -7,6 +7,7 @@ export interface FormFieldProps {
   type: string;
   required: boolean;
   requiredErrorMessage: string;
+  disabled: boolean;
 }
 
 export interface FormStyleProps {
