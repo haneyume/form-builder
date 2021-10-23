@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { FormFieldProps, FormStyleProps } from './Type';
+import { FormFieldProps, FormStyleProps } from './FormType';
 
 interface AppContextProps {
-  fields: FormFieldProps[];
-  setFields: React.Dispatch<React.SetStateAction<FormFieldProps[]>>;
-  formStyles: FormStyleProps;
-  setFormStyles: React.Dispatch<React.SetStateAction<FormStyleProps>>;
   selectedIndex: number;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  formFields: FormFieldProps[];
+  setFormFields: React.Dispatch<React.SetStateAction<FormFieldProps[]>>;
+  formStyles: FormStyleProps;
+  setFormStyles: React.Dispatch<React.SetStateAction<FormStyleProps>>;
 }
 
 export const AppContext = React.createContext<AppContextProps>(undefined!);
@@ -18,7 +18,8 @@ interface AppProviderProps {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const [fields, setFields] = React.useState<FormFieldProps[]>([]);
+  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
+  const [formFields, setFormFields] = React.useState<FormFieldProps[]>([]);
   const [formStyles, setFormStyles] = React.useState<FormStyleProps>({
     formClassName: 'flex flex-col px-5 py-6',
     fieldClassName: 'flex flex-col mb-5',
@@ -28,17 +29,16 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     submitButtonClassName:
       'py-3 rounded cursor-pointer text-white bg-blue-500 hover:bg-blue-400',
   });
-  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
 
   return (
     <AppContext.Provider
       value={{
-        fields,
-        setFields,
-        formStyles,
-        setFormStyles,
         selectedIndex,
         setSelectedIndex,
+        formFields,
+        setFormFields,
+        formStyles,
+        setFormStyles,
       }}
     >
       {children}

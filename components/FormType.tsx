@@ -8,6 +8,8 @@ export interface FormFieldProps {
   required: boolean;
   requiredErrorMessage: string;
   disabled: boolean;
+  optionTitles: string;
+  optionValues: string;
 }
 
 export interface FormStyleProps {

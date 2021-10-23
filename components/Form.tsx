@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm, UseFormRegister } from 'react-hook-form';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
-import { FormFieldProps, FormStyleProps } from './Type';
+import { FormFieldProps, FormStyleProps } from './FormType';
 
 interface FormProps {
   defaultValues?: any;
@@ -17,6 +18,8 @@ export const Form = ({
   styles,
   onSubmit,
 }: FormProps) => {
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
@@ -69,7 +72,11 @@ export const Form = ({
         );
       })}
 
-      <input className={styles.submitButtonClassName} type="submit" />
+      <input
+        className={styles.submitButtonClassName}
+        type="submit"
+        value={t('Submit')}
+      />
     </form>
   );
 };
@@ -85,6 +92,8 @@ const CheckboxField = ({
   register: UseFormRegister<any>;
   errors: any;
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.fieldClassName}>
       <div className="flex items-center space-x-2">
@@ -94,18 +103,18 @@ const CheckboxField = ({
             styles.inputClassName,
             field.disabled && 'opacity-40',
           )}
-          placeholder={field.placeholder}
+          placeholder={t(field.placeholder)}
           disabled={field.disabled}
           type={field.type}
           {...register(field.name, { required: field.required })}
         />
         <label className={styles.labelClassName} htmlFor={`form_${field.name}`}>
-          {field.label}
+          {t(field.label)}
         </label>
       </div>
       {errors[field.name] && errors[field.name].type === 'required' && (
         <span className={styles.errorMessageClassName}>
-          {field.requiredErrorMessage}
+          {t(field.requiredErrorMessage)}
         </span>
       )}
     </div>
@@ -123,21 +132,23 @@ const InputField = ({
   register: UseFormRegister<any>;
   errors: any;
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.fieldClassName}>
       <label className={styles.labelClassName} htmlFor={field.name}>
-        {field.label}
+        {t(field.label)}
       </label>
       <input
         className={clsx(styles.inputClassName, field.disabled && 'opacity-40')}
-        placeholder={field.placeholder}
+        placeholder={t(field.placeholder)}
         disabled={field.disabled}
         type={field.type}
         {...register(field.name, { required: field.required })}
       />
       {errors[field.name] && errors[field.name].type === 'required' && (
         <span className={styles.errorMessageClassName}>
-          {field.requiredErrorMessage}
+          {t(field.requiredErrorMessage)}
         </span>
       )}
     </div>
@@ -155,24 +166,41 @@ const SelectField = ({
   register: UseFormRegister<any>;
   errors: any;
 }) => {
+  const { t } = useTranslation();
+
+  const optionTitles =
+    field.optionTitles === '' ? [] : field.optionTitles.split(';');
+  const optionValues =
+    field.optionValues === '' ? [] : field.optionValues.split(';');
+
   return (
     <div className={styles.fieldClassName}>
       <label className={styles.labelClassName} htmlFor={field.name}>
-        {field.label}
+        {t(field.label)}
       </label>
       <select
         className={clsx(styles.inputClassName, field.disabled && 'opacity-40')}
-        placeholder={field.placeholder}
+        placeholder={t(field.placeholder)}
         disabled={field.disabled}
         {...register(field.name, { required: field.required })}
       >
-        <option></option>
-        <option>Dog</option>
-        <option>Cat</option>
+        <option value="" selected disabled>
+          {t(field.placeholder)}
+        </option>
+        {optionValues.map((item, index) => {
+          const title =
+            optionTitles.length > index ? optionTitles[index] : item;
+
+          return (
+            <option key={index} value={item}>
+              {t(title)}
+            </option>
+          );
+        })}
       </select>
       {errors[field.name] && errors[field.name].type === 'required' && (
         <span className={styles.errorMessageClassName}>
-          {field.requiredErrorMessage}
+          {t(field.requiredErrorMessage)}
         </span>
       )}
     </div>
@@ -190,21 +218,23 @@ const TextAreaField = ({
   register: UseFormRegister<any>;
   errors: any;
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.fieldClassName}>
       <label className={styles.labelClassName} htmlFor={field.name}>
-        {field.label}
+        {t(field.label)}
       </label>
       <textarea
         className={clsx(styles.inputClassName, field.disabled && 'opacity-40')}
-        placeholder={field.placeholder}
+        placeholder={t(field.placeholder)}
         disabled={field.disabled}
         rows={5}
         {...register(field.name, { required: field.required })}
       />
       {errors[field.name] && errors[field.name].type === 'required' && (
         <span className={styles.errorMessageClassName}>
-          {field.requiredErrorMessage}
+          {t(field.requiredErrorMessage)}
         </span>
       )}
     </div>
