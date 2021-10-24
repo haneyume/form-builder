@@ -80,7 +80,9 @@ export const FormFieldProprties = () => {
           'select',
           'textarea',
         ].map((item) => (
-          <option value={item}>{item}</option>
+          <option key={item} value={item}>
+            {item}
+          </option>
         ))}
       </select>
 
